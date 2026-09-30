@@ -1,0 +1,21 @@
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# Node (solo se in futuro aggiungi un tooling)
+node_modules/
+
+# Ambienti e segreti
+.env
+.env.local
+
+# File di lavoro temporanei
+*.tmp
+*.bak
+*.log
