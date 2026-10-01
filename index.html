@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Marco Rossi — Sviluppatore Full-Stack</title>
-  <meta name="description" content="Sviluppatore full-stack. Progetto interfacce web veloci e scalable, dal concept al deploy. Contattami per una collaborazione.">
-  <meta name="author" content="Marco Rossi">
+  <title>Antonio Verde — Sviluppatore Full-Stack</title>
+  <meta name="description" content="Sviluppatore full-stack. Progetto interfacce web veloci e scalabili, dal concept al deploy. Contattami per una collaborazione.">
+  <meta name="author" content="Antonio Verde">
   <meta name="theme-color" content="#0b0d12">
 
+  <link rel="canonical" href="https://greencode-dev.github.io/myportafolio/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Marco Rossi — Sviluppatore Full-Stack">
+  <meta property="og:url" content="https://greencode-dev.github.io/myportafolio/">
+  <meta property="og:title" content="Antonio Verde — Sviluppatore Full-Stack">
   <meta property="og:description" content="Progetto interfacce web veloci e scalabili, dal concept al deploy.">
   <meta property="og:locale" content="it_IT">
 
@@ -26,7 +28,7 @@
     <div class="container header__inner">
       <a class="logo" href="#hero">
         <span class="logo__mark" aria-hidden="true">&lt;/&gt;</span>
-        <span class="logo__text">marco<span class="accent">.dev</span></span>
+        <span class="logo__text">antonioverde<span class="accent">.dev</span></span>
       </a>
 
       <nav class="nav" id="nav" aria-label="Navigazione principale">
@@ -69,7 +71,7 @@
           </p>
 
           <h1 class="hero__title reveal">
-            Ciao, sono <span class="gradient-text">Marco</span>.<br>
+            Ciao, sono <span class="gradient-text">Antonio</span>.<br>
             Costruisco prodotti web che si usano bene.
           </h1>
 
@@ -113,7 +115,7 @@
               <span class="code-card__file">developer.ts</span>
             </div>
             <pre class="code-card__body"><code><span class="tok-kw">const</span> <span class="tok-var">developer</span> = {
-  nome:  <span class="tok-str">"Marco"</span>,
+  nome:  <span class="tok-str">"Antonio"</span>,
   ruolo:  <span class="tok-str">"Full-Stack"</span>,
   stack: [<span class="tok-str">"React"</span>, <span class="tok-str">"Node"</span>, <span class="tok-str">"Postgres"</span>],
   caffe:  <span class="tok-num">Infinity</span>,
@@ -304,17 +306,17 @@
             <ul class="contact__list">
               <li>
                 <span class="contact__label">Email</span>
-                <button class="contact__value" type="button" id="copy-email" data-email="ciao@marcorossi.dev" title="Clicca per copiare">
-                  ciao@marcorossi.dev
+                <button class="contact__value" type="button" id="copy-email" data-email="antonioverde.dev@gmail.com" title="Clicca per copiare">
+                  antonioverde.dev@gmail.com
                 </button>
               </li>
               <li>
                 <span class="contact__label">GitHub</span>
-                <a class="contact__value" href="#contatti">github.com/marcorossi</a>
+                <a class="contact__value" href="https://github.com/greencode-dev" target="_blank" rel="noopener noreferrer">github.com/greencode-dev</a>
               </li>
               <li>
                 <span class="contact__label">LinkedIn</span>
-                <a class="contact__value" href="#contatti">linkedin.com/in/marcorossi</a>
+                <a class="contact__value" href="https://www.linkedin.com/in/antonioverdedev/" target="_blank" rel="noopener noreferrer">linkedin.com/in/antonioverdedev</a>
               </li>
               <li>
                 <span class="contact__label">Dove sono</span>
@@ -324,21 +326,29 @@
             <p class="contact__note" id="copy-feedback" role="status" aria-live="polite"></p>
           </div>
 
-          <form class="form reveal" id="contact-form" novalidate>
+          <form class="form reveal" id="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate data-fallback-email="antonioverde.dev@gmail.com">
+            <input type="hidden" name="access_key" value="518c3a9c-75e9-42de-8a6f-b3721fcde334" data-web3forms-key>
+            <input type="hidden" name="subject" value="Richiesta dal portfolio">
+            <input type="hidden" name="from_name" value="Portfolio">
+            <input type="hidden" name="redirect" value="false">
+            <div class="form__hp" aria-hidden="true">
+              <label>Lascia questo campo vuoto<input type="text" name="botcheck" tabindex="-1" autocomplete="off"></label>
+            </div>
             <div class="form__row">
               <label class="form__field">
                 <span>Nome</span>
-                <input type="text" name="nome" placeholder="Il tuo nome" required>
+                <input type="text" name="nome" placeholder="Il tuo nome" required data-validate>
               </label>
               <label class="form__field">
                 <span>Email</span>
-                <input type="email" name="email" placeholder="nome@dominio.it" required>
+                <input type="email" name="email" placeholder="nome@dominio.it" required data-validate>
               </label>
             </div>
             <label class="form__field">
               <span>Messaggio</span>
-              <textarea name="messaggio" rows="5" placeholder="Di cosa hai bisogno?" required></textarea>
+              <textarea name="messaggio" rows="5" placeholder="Di cosa hai bisogno?" required data-validate></textarea>
             </label>
+            <div class="h-captcha" data-captcha="true" data-lang="it" data-theme="auto"></div>
             <button class="btn btn--primary btn--full" type="submit" id="form-submit">Invia messaggio</button>
             <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
           </form>
@@ -349,12 +359,12 @@
 
   <footer class="footer">
     <div class="container footer__inner">
-      <p>© <span id="year">2026</span> Marco Rossi — costruito a mano, senza framework.</p>
+      <p>© <span id="year">2026</span> Antonio Verde — costruito a mano, senza framework.</p>
       <nav aria-label="Link social">
         <ul class="footer__links">
-          <li><a href="#contatti">GitHub</a></li>
-          <li><a href="#contatti">LinkedIn</a></li>
-          <li><a href="#contatti">Email</a></li>
+          <li><a href="https://github.com/greencode-dev" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/antonioverdedev/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a href="mailto:antonioverde.dev@gmail.com">Email</a></li>
         </ul>
       </nav>
     </div>
@@ -366,6 +376,7 @@
     </svg>
   </button>
 
+  <script src="https://web3forms.com/client/script.js" async defer></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

@@ -649,6 +649,14 @@ button.contact__value:hover { color: var(--accent); }
 .form__status { font-size: 0.87rem; min-height: 1.2em; color: var(--text-muted); margin: 0; }
 .form__status.is-ok { color: #34d399; }
 .form__status.is-err { color: #ef4444; }
+.form__hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.form .h-captcha { min-height: 78px; }
 
 .footer {
   border-top: 1px solid var(--border);

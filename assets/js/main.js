@@ -216,6 +216,14 @@
     const submit = document.getElementById("form-submit");
     if (!form) return;
 
+    const fallbackEmail = form.dataset.fallbackEmail || "";
+    const keyField = form.querySelector("[data-web3forms-key]");
+    const accessKey = keyField ? keyField.value.trim() : "";
+    const endpoint = form.getAttribute("action") || "";
+    const isConfigured = endpoint.indexOf("api.web3forms.com") > -1 && /^[\w-]{20,}$/.test(accessKey);
+    const label = submit ? submit.textContent : "";
+    const captcha = form.querySelector("[data-captcha]");
+
     const setStatus = function (message, state) {
       if (!status) return;
       status.textContent = message;
@@ -223,10 +231,49 @@
       if (state) status.classList.add(state);
     };
 
+    const setBusy = function (busy, message) {
+      if (!submit) return;
+      submit.disabled = busy;
+      submit.textContent = message || label;
+    };
+
+    const captchaSolved = function () {
+      if (!captcha) return true;
+      const response = form.querySelector('[name="h-captcha-response"]');
+      return !!(response && response.value);
+    };
+
+    const resetCaptcha = function () {
+      if (!captcha || !window.hcaptcha || typeof window.hcaptcha.reset !== "function") return;
+      try {
+        const id = typeof window.hcaptcha.getWidgetID === "function" ? window.hcaptcha.getWidgetID(captcha) : 0;
+        window.hcaptcha.reset(id);
+      } catch (err) {}
+    };
+
+    const clearInvalid = function (fields) {
+      fields.forEach(function (field) {
+        field.removeAttribute("aria-invalid");
+      });
+      form.reset();
+      resetCaptcha();
+    };
+
+    const fallback = function (nome) {
+      const data = new FormData(form);
+      const body = ["Nome: " + data.get("nome"), "Email: " + data.get("email"), "", String(data.get("messaggio"))].join("\n");
+      const href =
+        "mailto:" + fallbackEmail +
+        "?subject=" + encodeURIComponent("Richiesta dal portfolio — " + nome) +
+        "&body=" + encodeURIComponent(body);
+      window.location.href = href;
+      setStatus("Si è aperto il tuo client email. Se non parte, scrivi a " + fallbackEmail, "is-ok");
+    };
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      const fields = Array.from(form.querySelectorAll("input, textarea"));
+      const fields = Array.from(form.querySelectorAll("[data-validate]"));
       let valid = true;
 
       fields.forEach(function (field) {
@@ -245,35 +292,58 @@
         return;
       }
 
-      if (submit) {
-        submit.disabled = true;
-        submit.textContent = "Invio in corso…";
+      if (!isConfigured) {
+        setBusy(true, "Apro l'email…");
+        setTimeout(function () {
+          fallback(new FormData(form).get("nome"));
+          setBusy(false);
+        }, 500);
+        return;
       }
+
+      if (!captchaSolved()) {
+        setStatus("Completa il captcha prima di inviare.", "is-err");
+        return;
+      }
+
+      const data = new FormData(form);
+      const subject = form.querySelector('input[name="subject"]');
+      if (subject) subject.value = "Richiesta dal portfolio — " + data.get("nome");
+      const payload = new FormData(form);
+      payload.set("access_key", accessKey);
+
+      setBusy(true, "Invio in corso…");
       setStatus("");
 
-      const recipient = "mailto:ciao@marcorossi.dev";
-      const data = new FormData(form);
-      const body = [
-        "Nome: " + data.get("nome"),
-        "Email: " + data.get("email"),
-        "",
-        String(data.get("messaggio")),
-      ].join("\n");
-      const subject = encodeURIComponent("Richiesta dal portfolio — " + data.get("nome"));
-      const href = recipient + "?subject=" + subject + "&body=" + encodeURIComponent(body);
-
-      setTimeout(function () {
-        window.location.href = href;
-        form.reset();
-        fields.forEach(function (field) {
-          field.removeAttribute("aria-invalid");
+      fetch(endpoint, {
+        method: "POST",
+        body: payload,
+        headers: { Accept: "application/json" },
+      })
+        .then(function (res) {
+          return res.json().then(
+            function (body) {
+              return { ok: res.ok, body: body };
+            },
+            function () {
+              return { ok: false, body: null };
+            }
+          );
+        })
+        .then(function (result) {
+          setBusy(false);
+          if (result.ok && result.body && result.body.success) {
+            clearInvalid(fields);
+            setStatus(result.body.message || "Messaggio inviato. Rispondo entro 24 ore.", "is-ok");
+            return;
+          }
+          const reason = (result.body && result.body.message) || "il servizio non ha risposto";
+          setStatus("Invio non riuscito (" + reason + "). Scrivi a " + fallbackEmail + ".", "is-err");
+        })
+        .catch(function () {
+          setBusy(false);
+          setStatus("Connessione non disponibile. Scrivi a " + fallbackEmail + ".", "is-err");
         });
-        if (submit) {
-          submit.disabled = false;
-          submit.textContent = "Invia messaggio";
-        }
-        setStatus("Si è aperto il tuo client email. Se non parte, scrivi direttamente a ciao@marcorossi.dev", "is-ok");
-      }, 700);
     });
   }
 
