@@ -306,9 +306,6 @@
         return;
       }
 
-      const data = new FormData(form);
-      const subject = form.querySelector('input[name="subject"]');
-      if (subject) subject.value = "Richiesta dal portfolio — " + data.get("nome");
       const payload = new FormData(form);
       payload.set("access_key", accessKey);
 
