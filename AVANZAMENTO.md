@@ -1,7 +1,7 @@
 # Stato del progetto — portafoglio one-page
 
 Ultimo aggiornamento: 01/10/2026
-Stato: **funzionante e verificato**, dati personali e access key Web3Forms inseriti. Manca solo il push su GitHub.
+Stato: **contenuti reali dal CV**, tutto verificato. Manca solo creare il repo GitHub e fare push.
 
 ## Cosa c'è
 
@@ -62,22 +62,34 @@ Dettagli implementativi (scelte già prese, non riverificarle):
 - `data-theme="auto"` su hCaptcha segue la preferenza del sistema operativo, **non** il toggle chiaro/scuro del sito. Il widget ha quindi il tema "sbagliato" se l'utente ha scelto un tema diverso da quello del SO. Per correggerlo serve `hcaptcha.reset()` con re-render al cambio tema: non implementato, è un dettaglio cosmetico.
 - La chiave è **pubblica per design**. Sta nell'HTML come in tutti gli esempi Web3Forms: non è un segreto, serve a identificare *destinatario*, non ad autorizzare. Chiunque può leggerla, nessuno può inviare senza passare il captcha. Se un domani serve un backend, la chiave si può spostare in una Cloudflare Worker o Netlify Function che fa da proxy — ma a quel punto è il captcha a proteggere, non la chiave.
 
-## Dati personali — inseriti il 01/10
+## Contenuti reali — presi dal CV il 01/10
 
-Nome **Antonio Verde**, email `antonioverde.dev@gmail.com`, GitHub `greencode-dev`, LinkedIn `antonioverdedev`.
+Fonte: `~/Downloads/cv-antonio-verde-ai-draft.json`. Tutti i testi del sito derivano da lì, niente più segnaposto.
 
-Propagati in: title (6), author (8), canonical + og:url (11-13), og:title (14), logo (31), h1 (74), code card (118), email in pagina e fallback (309-310, 329), social (315, 319), footer (361, 364-366). `robots.txt` e `sitemap.xml` puntano a `https://greencode-dev.github.io/myportafolio/`.
+| Sezione | Cosa dice il CV | Cosa ho messo |
+|---|---|---|
+| Città | Trento | Trento (era Torino, segnaposto) |
+| Ruolo | Full-Stack Web Developer, React/Laravel/MySQL, Boolean 2026 | title, og, meta description, hero lead |
+| Lavoro | Assistente Tecnico, Ministero della Giustizia, 2023 → oggi, LDAP/Active Directory | timeline + bio |
+| Certificazione | Boolean Full-Stack, luglio 2026 | timeline |
+| Progetti | Astralis (open source, 381 test) e IT Admin Dashboard (privato) | 2 card invece delle 3 inventate |
+| Formazione | Diploma, I.T.A.S. Elena di Savoia, Napoli, 2000-2005 | timeline |
+| Disponibilità | freelance, su commissione, part-time remoto | badge hero + lead contatti |
 
-## Da personalizzare — affare tuo
+**Numeri hero**: 3 anni / 2 progetti / 381 test. Ho tolto "100% clienti soddisfatti" — non è verificabile e non hai client. Se preferisci un altro numero al 381, cambia l'attributo `data-count` (i contatori sono animati).
 
-Restano i pezzi **più personali**, che ho lasciato generici perché non li conosco. Tutte le righe sono di `index.html`.
+**Stack riscritto**: il sito dichiarava Node.js, PostgreSQL, TypeScript e DevOps/Docker, che **non sono nel CV**. Le card ora sono React & JavaScript, Laravel & PHP, MySQL, Livewire, Tailwind CSS, Git & tooling — solo cose che risultano dal CV.
 
-1. **Città** — riga 323: "Torino, Italia". Metti la tua, o togli tutta la riga se preferisci.
-2. **Numeri hero** — righe 79, 96, 100, 104: "6 anni", "40+ progetti", "100% clienti". Metti i tuoi, l'attributo `data-count` anima il contatore.
-3. **Biografia** — righe 255 e 260. Sono inventati (gestionale locale, team piccoli). Riscrivili con la tua storia: è la sezione che i visitatori leggono di più.
-4. **Timeline** — righe 275, 280, 285, 289: datori di lavoro generici e "Laurea in Informatica". Metti nomi e ruoli reali, o rimuovi le voci che non ti riguardano.
-5. **Progetti** — righe 184, 205, 226: nomi, descrizioni e chip sono di esempio, e la `.project__media` è un gradiente senza immagine. Sostituisci con `<img src="assets/img/nome.png" alt="…">` dentro `.project__media` e crea `assets/img/`. I link "Caso studio" e "GitHub" puntano a `#contatti`.
-6. **Dominio** — se compri `antonioverde.dev`, aggiungi il file `CNAME` con il dominio e cambia le 4 occorrenze di `greencode-dev.github.io/myportafolio` (canonical, og:url, sitemap.xml, robots.txt).
+**Griglia progetti**: passata a `repeat(auto-fit, minmax(320px, 1fr))`. Con `repeat(3, ...)` due card avrebbero lasciato una colonna vuota; `auto-fit` collassa la traccia vuota e si adatta a qualsiasi numero di progetti.
+
+## Cose ancora da decidere
+
+1. **Progetti in evidenza**: il profilo GitHub ha **53 repository pubblici**, il CV ne cita 2. Se qualcuno merita la terza card, dimmi quale. Altrimenti lascia due card: è più onesto e la sezione resta credibile.
+2. **Screenshot progetti**: le `.project__media` sono ancora gradiente senza immagine. Se hai screenshot di Astralis e del dashboard, mettili in `assets/img/` e li linko.
+3. **Foto**: il CV ha una tua foto (`rxresu.me/.../1787494195086.jpeg`). Non l'ho usata — nel portfolio attuale c'è la code card al suo posto. Dimmi se preferisci la foto.
+4. **Lingue**: italiano madre, inglese e spagnolo livello 2. Non c'è una sezione lingue nel sito. Aggiungerla o no?
+5. **CSS morto**: `.link-ghost` (`style.css`:165-174) non è più usato da nessuna parte, ho tolto i link "GitHub" duplicati dalle card progetto. Si può cancellare.
+6. **Dominio**: se compri `antonioverde.dev`, aggiungi il file `CNAME` e cambia le 4 occorrenze di `greencode-dev.github.io/myportafolio` (canonical, og:url, sitemap.xml, robots.txt).
 
 ## Decisioni aperte
 
@@ -89,14 +101,19 @@ Restano i pezzi **più personali**, che ho lasciato generici perché non li cono
 
 Repo deciso: **`greencode-dev/myportafolio`** → URL `https://greencode-dev.github.io/myportafolio/`.
 
-`.nojekyll` è già in place, la struttura è pronta, e i link interni sono tutti relativi quindi funzionano anche sotto il subpath `/myportafolio/`. Manca solo il lato git (non esiste ancora un remote, e `gh` non è installato):
+`.nojekyll` è già in place, la struttura è pronta, e i link interni sono tutti relativi quindi funzionano anche sotto il subpath `/myportafolio/`. **Il remote è già impostato**; resta solo creare il repo e fare push.
+
+Il repo `greencode-dev/myportafolio` al momento **non esiste** (verificato via API GitHub il 01/10: l'utente `greencode-dev` esiste, il repo no). `gh` non è installato, quindi non posso crearlo io.
 
 ```powershell
-git remote add origin https://github.com/greencode-dev/myportafolio.git
+# 1. crea il repo vuoto su github.com/greencode-dev (senza README/.gitignore/license)
+# 2. poi:
 git push -u origin main
 ```
 
-Crea prima il repo vuoto su GitHub, altrimenti il push viene rifiutato. Poi nella UI: **Settings → Pages → Build and deployment → Source: Deploy from a branch**, branch `main`, cartella `/ (root)`.
+L'autenticazione la fa Git Credential Manager (`credential.helper=manager` è già configurato): si aprirà il browser una volta sola.
+
+Poi nella UI: **Settings → Pages → Build and deployment → Source: Deploy from a branch**, branch `main`, cartella `/ (root)`.
 
 Nota: essendo un *project* site (non `greencode-dev.github.io`), l'URL ha il subpath `/myportafolio/`. Non dà problemi, ma se in futuro vuoi un URL pulito puoi spostare i file in un repo `greencode-dev.github.io` e cambiare le 4 occorrenze del dominio.
 
