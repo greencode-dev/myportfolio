@@ -53,8 +53,9 @@ Dettagli implementativi (scelte già prese, non riverificarle):
 - `captchaSolved()` controlla `[name="h-captcha-response"]` con guardia `null` (il widget è renderizzato asincrono, prima non esiste). Al posto del `alert()` della doc ufficiale c'è un messaggio in `#form-status`, coerente col resto del form.
 - **Controllo del captcha solo sul percorso Web3Forms**, non sul fallback `mailto:`: obbligare a risolvere un captcha per aprire il client email sarebbe solo fastidio.
 - **`resetCaptcha()` dopo l'invio riuscito**: i token hCaptcha sono monouso, senza reset il secondo invio dalla stessa pagina fallisce. Usa `hcaptcha.getWidgetID()` con fallback a `0`, tutto in try/catch.
+- **L'oggetto delle email è gestito dalla dashboard Web3Forms, non dal codice.** Il form non manda più nessun campo `subject`: il placeholder è `{field:nome}` / `{field:email}` / `{field:messaggio}`, da scrivere in Settings → Email Configuration → Subject. Non reintroduire un `name="subject"` hidden o un `payload.set("subject", ...)`: il campo del form vince sulla dashboard e i token diventano inerti.
 - Honeypot `botcheck` con `.form__hp` (off-screen, non `display:none`, altrimenti i bot lo ignorano). Escluso dalla validazione client.
-- `redirect=false` + `Accept: application/json`: Web3Forms risponde JSON e la pagina non naviga via.
+- `redirect=false` + `Accept: application/json`: Web3Forms risponde JSON e la pagina non naviga via. Nella dashboard il campo Redirect URL è stato svuotato: era il placeholder `https://yoursite.com/thank-you` e, se `redirect=false` venisse tolto, gli utenti finirebbero su una pagina inesistente.
 - `web3forms.com/client/script.js` **non** intercetta il submit: letto il sorgente, si occupa solo di iniettare hCaptcha e FilePond. Quindi `initForm` resta l'unico a decidere come inviare.
 
 **Limiti noti, accettati consapevolmente:**
