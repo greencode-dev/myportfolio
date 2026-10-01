@@ -89,25 +89,23 @@ Fonte: `~/Downloads/cv-antonio-verde-ai-draft.json`. Tutti i testi del sito deri
 3. **Foto**: il CV ha una tua foto (`rxresu.me/.../1787494195086.jpeg`). Non l'ho usata — nel portfolio attuale c'è la code card al suo posto. Dimmi se preferisci la foto.
 4. **Lingue**: italiano madre, inglese e spagnolo livello 2. Non c'è una sezione lingue nel sito. Aggiungerla o no?
 5. **CSS morto**: `.link-ghost` (`style.css`:165-174) non è più usato da nessuna parte, ho tolto i link "GitHub" duplicati dalle card progetto. Si può cancellare.
-6. **Dominio**: se compri `antonioverde.dev`, aggiungi il file `CNAME` e cambia le 4 occorrenze di `greencode-dev.github.io/myportafolio` (canonical, og:url, sitemap.xml, robots.txt).
+6. **Dominio**: se compri `antonioverde.dev`, aggiungi il file `CNAME` e cambia le 4 occorrenze di `greencode-dev.github.io/myportfolio` (canonical, og:url, sitemap.xml, robots.txt).
 
 ## Decisioni aperte
 
-- **Deploy**: scelto **GitHub Pages** su repo `myportafolio`. Manca solo la parte git, vedi sotto.
+- **Deploy**: GitHub Pages su repo `myportfolio`. Push e configurazione Pages, vedi sotto.
 - **Privacy**: l'email è pubblicata in chiaro. Se preferisci ometterla, togli il `<li>` in contatti e lascia solo il form.
 - **Redirect email**: con Web3Forms le email arrivano da `noreply@web3forms.com`; valuta un indirizzo alias tipo `antonio@antonioverde.dev` inoltrato a Gmail, così non pubblichi l'address personale.
 
 ## Deploy — GitHub Pages
 
-Repo deciso: **`greencode-dev/myportafolio`** → URL `https://greencode-dev.github.io/myportafolio/`.
+Repo deciso: **`greencode-dev/myportfolio`** → URL `https://greencode-dev.github.io/myportfolio/`.
 
-`.nojekyll` è già in place, la struttura è pronta, e i link interni sono tutti relativi quindi funzionano anche sotto il subpath `/myportafolio/`. **Il remote è già impostato**; resta solo creare il repo e fare push.
+Nota: il nome è `myportfolio`, non `myportafolio` come inizialmente pattuito. Se in futuro vuoi cambiarlo, il repo GitHub si rinomina e poi vanno cambiate le 4 occorrenze di `greencode-dev.github.io/myportfolio` (canonical, og:url, sitemap.xml, robots.txt).
 
-Il repo `greencode-dev/myportafolio` al momento **non esiste** (verificato via API GitHub il 01/10: l'utente `greencode-dev` esiste, il repo no). `gh` non è installato, quindi non posso crearlo io.
+`.nojekyll` è già in place, la struttura è pronta, e i link interni sono tutti relativi quindi funzionano anche sotto il subpath `/myportfolio/`. **Il remote è già impostato** su `myportfolio`.
 
 ```powershell
-# 1. crea il repo vuoto su github.com/greencode-dev (senza README/.gitignore/license)
-# 2. poi:
 git push -u origin main
 ```
 
@@ -115,7 +113,7 @@ L'autenticazione la fa Git Credential Manager (`credential.helper=manager` è gi
 
 Poi nella UI: **Settings → Pages → Build and deployment → Source: Deploy from a branch**, branch `main`, cartella `/ (root)`.
 
-Nota: essendo un *project* site (non `greencode-dev.github.io`), l'URL ha il subpath `/myportafolio/`. Non dà problemi, ma se in futuro vuoi un URL pulito puoi spostare i file in un repo `greencode-dev.github.io` e cambiare le 4 occorrenze del dominio.
+Nota: essendo un *project* site (non `greencode-dev.github.io`), l'URL ha il subpath `/myportfolio/`. Non dà problemi, ma se in futuro vuoi un URL pulito puoi spostare i file in un repo `greencode-dev.github.io` e cambiare le 4 occorrenze del dominio.
 
 ## Verifica fatta (01/10/2026)
 
