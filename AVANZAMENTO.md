@@ -40,20 +40,28 @@ assets/js/main.js       9 funzioni di interazione, ~340 righe
 
 ## Allineamento sezione contatti (desktop)
 
-Risolto il 02/10. La modifica che conta è che **`.contact__info` è diventata una card** con le stesse proprietà del form (`background: var(--bg-elev)`, `border: 1px solid var(--border)`, `border-radius: var(--radius)`, `padding: 26px`). `.contact__grid` resta con `align-items: start`.
+Risolto il 02/10, in tre passaggi. Misure a 1440px.
 
-Cosa è stato risolto e come:
+**1. La colonna info è diventata una card.** Ha le stesse proprietà del form (`background: var(--bg-elev)`, `border: 1px solid var(--border)`, `border-radius: var(--radius)`, `padding: 26px`). Prima era testo nudo senza cassa: le due colonne non avevano nulla in comune. `.contact__list li:first-child { padding-top: 0; }` riporta "Email" e "Nome" sulla stessa riga: senza, il `padding: 13px 0` del primo `<li>` li separava di 15.2px.
 
-- **Prima** la colonna info era testo nudo, senza bordo né sfondo, contro una card: le due colonne non avevano nulla in comune. Ora sono due card identiche nella cassa, con bordi che coincidono.
-- **Disallineamento delle prime righe**: il primo `<li>` ha `padding: 13px 0`, quindi "Email" scendeva 13px dal bordo mentre "Nome" scendeva 27px (26px di padding + 1px di bordo) — **15.2px** di disallineamento. Risolto con `.contact__list li:first-child { padding-top: 0; }`, che riporta entrambe a 27px.
+**2. `align-items: stretch` è stato provato e va tenuto a `start`.** Con `stretch` le due card diventano alte entrambe 526.5px e i bordi bassi coincidono, ma il contenuto della card info è 235.7px: restano **238.8px di vuoto in fondo**, il 45% della card. Il vuoto non sparisce, si sposta dentro la card e il contenuto risulta ammassato in alto. Non rimettere `stretch` senza aver prima ridato alla colonna sinistra contenuto sufficiente (per esempio la sezione lingue, ancora da decidere).
 
-**`align-items: stretch` è stato provato e va tenuto a `start`.** Con `stretch` le due card diventano alte entrambe 526.5px e i bordi bassi coincidono, ma il contenuto della card info è solo 235.7px: restano **238.8px di vuoto in fondo**, il 45% della card. Il vuoto non sparisce, si sposta dentro la card e il contenuto risulta ammassato in alto — visivamente peggio. Non rimettere `stretch` senza aver prima ridato alla colonna sinistra contenuto sufficiente (per esempio la sezione lingue, ancora da decidere).
+**3. Le due card devono essere larghe uguali, e per farlo servono due `minmax(0, 1fr)`.** Con `0.9fr 1.1fr` erano 462.6px contro 565.4px: 103px di asimmetria, ed è quello che faceva leggere le due card come non allineate.
+
+- `.contact__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }` → le colonne diventano **514px e 514px**.
+- **Non usare `1fr 1fr`**: `1fr` è `minmax(auto, 1fr)` e il `min-content` del form (hCaptcha più i due input affiancati) blocca la seconda traccia a 530px, quindi le colonne vengono 498 e 530 — disuguali, che è il problema che si voleva eliminare.
+- **Attenzione: il solo `minmax(0, 1fr)` sulla griglia esterna non basta.** Restringe la traccia ma non gli elementi, che hanno ancora `min-width: auto`, e a 1024px la pagina va in overflow (`scrollWidth` 1037) con `.form__row`, i due input, il textarea e hCaptcha che sbordano di 13px. Servono anche `.form__row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }` e `min-width: 0` su `.form__field input, .form__field textarea`.
+- Il motivo di fondo: **l'intrinsic width di un `<input>` è 230px**. Se il campo è più stretto, il controllo non si restringe e sborda dal proprio riquadro — fino a **42.8px a 981px di viewport**. `min-width: 0` sugli input è la correzione.
+
+Stato finale verificato: colonne 514/514 a 1440px, top di entrambe le card a 3818.2, `spill` degli input 0 e nessun overflow a 1920/1440/1280/1100/1024/1000/981/950/760/600/390px.
 
 Non c'è una classe `.card` condivisa: ogni componente ripete le tre proprietà, `.contact__info` segue la stessa convenzione.
 
-**Cosa NON è un problema** (misurato a 1440px, non supposto): i bordi esterni di tutte le sezioni coincidono già, container e griglie vanno tutti da 184 a 1256px. Gli inset interni del testo differiscono di pochi pixel — progetti 23px, stack 25px, contatti 27px — quindi il testo non parte dalla stessa x fra le sezioni, ma è uno scarto di 4px.
+**Cosa NON è un problema** (misurato, non supposto): i bordi esterni di tutte le sezioni coincidono già, container e griglie vanno tutti da 184 a 1256px. Gli inset interni del testo differiscono di pochi pixel — progetti 23px, stack 25px, contatti 27px — quindi il testo non parte dalla stessa x fra le sezioni, ma è uno scarto di 4px.
 
-**Limite noto, preesistente e non introdotto qui**: a **320px** di larghezza l'hero va in overflow orizzontale (`scrollWidth` 380px). Gli elementi coinvolti sono `.hero__content`, `.hero__title`, `.hero__actions` e i bottoni, tutti nell'hero: la sezione contatti non c'entra. Nessun overflow a 1440/1024/900/760/390px.
+**L'altezza delle due card resta diversa** (289.7px contro 526.5px): il form ha più campi, non si può accorciare senza toccarli. Con la stessa larghezza le due card si leggono come colonna laterale più pannello, cioè una scelta e non un errore.
+
+**Limite noto, preesistente e non introdotto qui**: a **320px** di larghezza l'hero va in overflow orizzontale (`scrollWidth` 380px). Gli elementi coinvolti sono `.hero__content`, `.hero__title`, `.hero__actions` e i bottoni, tutti nell'hero: la sezione contatti non c'entra.
 
 ## Form contatti — Web3Forms + hCaptcha
 
@@ -140,7 +148,7 @@ L'autenticazione la fa Git Credential Manager (`credential.helper=manager` è gi
 
 ## Verifica fatta
 
-**02/10/2026** — Il live risponde 200 su `index.html`, `sitemap.xml`, `robots.txt`, `.nojekyll`, `assets/css/style.css`, `assets/js/main.js`. Contenuto del live identico al locale (diff riga per riga vuoto). Rimosso il CSS morto `.link-ghost`. **Form contatti testato con un invio reale dal sito live: hCaptcha verificato e email ricevuta**, quindi le impostazioni Web3Forms (metodo anti-spam e destinazione/forwarder) sono da considerare chiuse. Allineamento desktop della sezione contatti corretto e verificato con Chrome headless via CDP a 1440/1024/900/760/390px (nessun overflow orizzontale; a 320px resta un overflow preesistente dell'hero). Nota: `align-items: stretch` provato e scartato, vedi la sezione dedicata.
+**02/10/2026** — Il live risponde 200 su `index.html`, `sitemap.xml`, `robots.txt`, `.nojekyll`, `assets/css/style.css`, `assets/js/main.js`. Contenuto del live identico al locale (diff riga per riga vuoto). Rimosso il CSS morto `.link-ghost`. **Form contatti testato con un invio reale dal sito live: hCaptcha verificato e email ricevuta**, quindi le impostazioni Web3Forms (metodo anti-spam e destinazione/forwarder) sono da considerare chiuse. Allineamento desktop della sezione contatti corretto e verificato con Chrome headless via CDP: colonne 514/514 a 1440px, card allineate in alto, `spill` degli input 0 e nessun overflow a 1920/1440/1280/1100/1024/1000/981/950/760/600/390px. Nota: `align-items: stretch` provato e scartato, e `1fr` da solo non rende le colonne uguali — vedi la sezione dedicata. A 320px resta un overflow preesistente dell'hero.
 
 **01/10/2026** — Tutti i file rispondono HTTP 200 via `php -S` su `127.0.0.1:8123`, `.nojekyll` incluso. Sintassi JS validata con `node --check`. Tag bilanciati, nessun `id` duplicato, nessun `id` mancante dei 16 attesi. `index.html` è UTF-8 senza BOM. hCaptcha verificato contro la doc ufficiale e contro il sorgente di `web3forms.com/client/script.js` scaricato in locale.
 

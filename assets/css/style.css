@@ -543,7 +543,10 @@ img { max-width: 100%; display: block; }
 
 .contact__grid {
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
+  /* minmax(0, 1fr) e non 1fr: il min-content del form (hCaptcha + i due input
+     affiancati) bloccherebbe la traccia a 530px e le colonne non sarebbero
+     uguali, 498 contro 530. Con il min a 0 le due card sono larghe uguali. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 44px;
   align-items: start;
 }
@@ -610,7 +613,10 @@ button.contact__value:hover { color: var(--accent); }
 }
 .form__row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* minmax(0, 1fr) + min-width: 0 sugli input: senza, l'intrinsic width
+     dell'input (230px) tiene la traccia più larga del campo e il controllo
+     sborda dal proprio riquadro, fino a 42px a 981px di viewport. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 16px;
 }
 .form__field {
@@ -631,6 +637,7 @@ button.contact__value:hover { color: var(--accent); }
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 11px 14px;
+  min-width: 0;
   resize: vertical;
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
