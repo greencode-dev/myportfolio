@@ -38,6 +38,19 @@ assets/js/main.js       9 funzioni di interazione, ~340 righe
 | Copia email negli appunti | `initCopyEmail` |
 | Form con validazione → Web3Forms | `initForm` |
 
+## Allineamento sezione contatti (desktop)
+
+Risolto il 02/10. `.contact__grid` è passato da `align-items: start` a **`stretch`** e `.contact__info` ha ricevuto le stesse tre proprietà della card del form (`background: var(--bg-elev)`, `border: 1px solid var(--border)`, `border-radius: var(--radius)`, `padding: 26px`). Motivo delle due modifiche:
+
+- Con `start` la colonna info era alta 248.7px contro 526.5px del form: restavano **277.8px di vuoto** a sinistra, che è quello che rendeva la sezione "non allineata".
+- Il primo `<li>` ha `padding: 13px 0`, quindi "Email" scendeva 13px mentre "Nome" scendeva 27px (26px di padding + 1px di bordo): **15.2px di disallineamento** fra le prime due righe. Risolto con `.contact__list li:first-child { padding-top: 0; }`, che riporta entrambe a 27px dal bordo.
+
+Non c'è una classe `.card` condivisa: ogni componente ripete le tre proprietà, `.contact__info` segue la stessa convenzione.
+
+Misure prima → dopo a 1440px: `info` e `form` condividono top (3818.2) e bottom (4344.7), altezza 526.5px per entrambe; prime righe a 1px di distanza. Sotto i 980px la griglia passa a una colonna e `stretch` non ha effetto: la card info torna all'altezza naturale.
+
+**Limite noto, preesistente e non introdotto qui**: a **320px** di larghezza l'hero va in overflow orizzontale (`scrollWidth` 380px). Gli elementi coinvolti sono `.hero__content`, `.hero__title`, `.hero__actions` e i bottoni, tutti nell'hero: la sezione contatti non c'entra. Nessun overflow a 1440/1024/900/760/390px.
+
 ## Form contatti — Web3Forms + hCaptcha
 
 Il form posta su `https://api.web3forms.com/submit`, protetto da **hCaptcha**. Configurazione lato account **verificata il 02/10**: hCaptcha è attivo come metodo di blocco spam e le email arrivano a destinazione.
@@ -123,7 +136,7 @@ L'autenticazione la fa Git Credential Manager (`credential.helper=manager` è gi
 
 ## Verifica fatta
 
-**02/10/2026** — Il live risponde 200 su `index.html`, `sitemap.xml`, `robots.txt`, `.nojekyll`, `assets/css/style.css`, `assets/js/main.js`. Contenuto del live identico al locale (diff riga per riga vuoto). Rimosso il CSS morto `.link-ghost`. **Form contatti testato con un invio reale dal sito live: hCaptcha verificato e email ricevuta**, quindi le impostazioni Web3Forms (metodo anti-spam e destinazione/forwarder) sono da considerare chiuse.
+**02/10/2026** — Il live risponde 200 su `index.html`, `sitemap.xml`, `robots.txt`, `.nojekyll`, `assets/css/style.css`, `assets/js/main.js`. Contenuto del live identico al locale (diff riga per riga vuoto). Rimosso il CSS morto `.link-ghost`. **Form contatti testato con un invio reale dal sito live: hCaptcha verificato e email ricevuta**, quindi le impostazioni Web3Forms (metodo anti-spam e destinazione/forwarder) sono da considerare chiuse. Allineamento desktop della sezione contatti corretto e verificato con Chrome headless via CDP a 1440/1024/900/760/390px (nessun overflow orizzontale; a 320px resta un overflow preesistente dell'hero).
 
 **01/10/2026** — Tutti i file rispondono HTTP 200 via `php -S` su `127.0.0.1:8123`, `.nojekyll` incluso. Sintassi JS validata con `node --check`. Tag bilanciati, nessun `id` duplicato, nessun `id` mancante dei 16 attesi. `index.html` è UTF-8 senza BOM. hCaptcha verificato contro la doc ufficiale e contro il sorgente di `web3forms.com/client/script.js` scaricato in locale.
 

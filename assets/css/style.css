@@ -545,7 +545,13 @@ img { max-width: 100%; display: block; }
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
   gap: 44px;
-  align-items: start;
+  align-items: stretch;
+}
+.contact__info {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 26px;
 }
 .contact__list {
   list-style: none;
@@ -562,6 +568,9 @@ img { max-width: 100%; display: block; }
   padding: 13px 0;
   border-bottom: 1px solid var(--border);
 }
+/* La card ha lo stesso padding del form: senza questo il padding del primo li
+   spingerebbe "Email" 13px sotto "Nome", che è allineato al bordo. */
+.contact__list li:first-child { padding-top: 0; }
 .contact__label {
   font-family: var(--mono);
   font-size: 0.78rem;
