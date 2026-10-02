@@ -1,7 +1,7 @@
 # Stato del progetto — portafoglio one-page
 
-Ultimo aggiornamento: 01/10/2026
-Stato: **contenuti reali dal CV**, tutto verificato. Manca solo creare il repo GitHub e fare push.
+Ultimo aggiornamento: 02/10/2026
+Stato: **deploy completato, sito live** su https://greencode-dev.github.io/myportfolio/. Restano solo scelte di contenuto (vedi sotto) e due impostazioni lato account Web3Forms.
 
 ## Cosa c'è
 
@@ -89,36 +89,41 @@ Fonte: `~/Downloads/cv-antonio-verde-ai-draft.json`. Tutti i testi del sito deri
 2. **Screenshot progetti**: le `.project__media` sono ancora gradiente senza immagine. Se hai screenshot di Astralis e del dashboard, mettili in `assets/img/` e li linko.
 3. **Foto**: il CV ha una tua foto (`rxresu.me/.../1787494195086.jpeg`). Non l'ho usata — nel portfolio attuale c'è la code card al suo posto. Dimmi se preferisci la foto.
 4. **Lingue**: italiano madre, inglese e spagnolo livello 2. Non c'è una sezione lingue nel sito. Aggiungerla o no?
-5. **CSS morto**: `.link-ghost` (`style.css`:165-174) non è più usato da nessuna parte, ho tolto i link "GitHub" duplicati dalle card progetto. Si può cancellare.
-6. **Dominio**: se compri `antonioverde.dev`, aggiungi il file `CNAME` e cambia le 4 occorrenze di `greencode-dev.github.io/myportfolio` (canonical, og:url, sitemap.xml, robots.txt).
+5. **Dominio**: se compri `antonioverde.dev`, aggiungi il file `CNAME` e cambia le 4 occorrenze di `greencode-dev.github.io/myportfolio` (canonical, og:url, sitemap.xml, robots.txt).
+
+## Pulizia fatta
+
+- **02/10** — `.link-ghost` rimosso da `style.css`: non era più usato da nessuna parte, dopo aver tolto i link "GitHub" duplicati dalle card progetto.
 
 ## Decisioni aperte
 
-- **Deploy**: GitHub Pages su repo `myportfolio`. Push e configurazione Pages, vedi sotto.
+- **Deploy**: fatto. GitHub Pages su repo `myportfolio` è attivo e il sito risponde, vedi sotto.
 - **Privacy**: l'email è pubblicata in chiaro. Se preferisci ometterla, togli il `<li>` in contatti e lascia solo il form.
 - **Redirect email**: con Web3Forms le email arrivano da `noreply@web3forms.com`; valuta un indirizzo alias tipo `antonio@antonioverde.dev` inoltrato a Gmail, così non pubblichi l'address personale.
 
-## Deploy — GitHub Pages
+## Deploy — GitHub Pages (completato)
 
-Repo deciso: **`greencode-dev/myportfolio`** → URL `https://greencode-dev.github.io/myportfolio/`.
+Repo: **`greencode-dev/myportfolio`** → URL `https://greencode-dev.github.io/myportfolio/`.
 
 Nota: il nome è `myportfolio`, non `myportafolio` come inizialmente pattuito. Se in futuro vuoi cambiarlo, il repo GitHub si rinomina e poi vanno cambiate le 4 occorrenze di `greencode-dev.github.io/myportfolio` (canonical, og:url, sitemap.xml, robots.txt).
 
-`.nojekyll` è già in place, la struttura è pronta, e i link interni sono tutti relativi quindi funzionano anche sotto il subpath `/myportfolio/`. **Il remote è già impostato** su `myportfolio`.
-
-```powershell
-git push -u origin main
-```
-
-L'autenticazione la fa Git Credential Manager (`credential.helper=manager` è già configurato): si aprirà il browser una volta sola.
-
-Poi nella UI: **Settings → Pages → Build and deployment → Source: Deploy from a branch**, branch `main`, cartella `/ (root)`.
+Configurazione in place: remote impostato, push fatto, `.nojekyll` presente, Pages su branch `main` cartella `/ (root)`. I link interni sono tutti relativi, quindi funzionano anche sotto il subpath `/myportfolio/`.
 
 Nota: essendo un *project* site (non `greencode-dev.github.io`), l'URL ha il subpath `/myportfolio/`. Non dà problemi, ma se in futuro vuoi un URL pulito puoi spostare i file in un repo `greencode-dev.github.io` e cambiare le 4 occorrenze del dominio.
 
-## Verifica fatta (01/10/2026)
+Ogni push su `main` ripubblica il sito: verificato che il live e il locale sono identici riga per riga. Per i prossimi push:
 
-Tutti i file rispondono HTTP 200 via `php -S` su `127.0.0.1:8123`, `.nojekyll` incluso. Sintassi JS validata con `node --check`. Tag bilanciati, nessun `id` duplicato, nessun `id` mancante dei 16 attesi. `index.html` è UTF-8 senza BOM. hCaptcha verificato contro la doc ufficiale e contro il sorgente di `web3forms.com/client/script.js` scaricato in locale.
+```powershell
+git push
+```
+
+L'autenticazione la fa Git Credential Manager (`credential.helper=manager` è già configurato).
+
+## Verifica fatta
+
+**02/10/2026** — Il live risponde 200 su `index.html`, `sitemap.xml`, `robots.txt`, `.nojekyll`, `assets/css/style.css`, `assets/js/main.js`. Contenuto del live identico al locale (diff riga per riga vuoto). Rimosso il CSS morto `.link-ghost`.
+
+**01/10/2026** — Tutti i file rispondono HTTP 200 via `php -S` su `127.0.0.1:8123`, `.nojekyll` incluso. Sintassi JS validata con `node --check`. Tag bilanciati, nessun `id` duplicato, nessun `id` mancante dei 16 attesi. `index.html` è UTF-8 senza BOM. hCaptcha verificato contro la doc ufficiale e contro il sorgente di `web3forms.com/client/script.js` scaricato in locale.
 
 ## Come riprendere
 
