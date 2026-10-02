@@ -1,7 +1,7 @@
 # Stato del progetto — portafoglio one-page
 
 Ultimo aggiornamento: 02/10/2026
-Stato: **deploy completato, sito live** su https://greencode-dev.github.io/myportfolio/. Restano solo scelte di contenuto (vedi sotto) e due impostazioni lato account Web3Forms.
+Stato: **deploy completato, sito live** su https://greencode-dev.github.io/myportfolio/. Form contatti verificato end-to-end. Restano solo scelte di contenuto (vedi sotto).
 
 ## Cosa c'è
 
@@ -40,10 +40,12 @@ assets/js/main.js       9 funzioni di interazione, ~340 righe
 
 ## Form contatti — Web3Forms + hCaptcha
 
-Il form posta su `https://api.web3forms.com/submit`, protetto da **hCaptcha**. Restano due configurazioni lato account:
+Il form posta su `https://api.web3forms.com/submit`, protetto da **hCaptcha**. Configurazione lato account **verificata il 02/10**: hCaptcha è attivo come metodo di blocco spam e le email arrivano a destinazione.
 
-1. **Dashboard** → sul form, imposta **hCaptcha** come metodo di blocco spam (l'hai già fatto). Se non è attivo, il widget viene mostrato ma non viene verificato.
-2. **Destinazione**: le email arrivano da `noreply@web3forms.com`. Metti in regola il forwarder su `antonioverde.dev@gmail.com` o cambia destinatario nelle impostazioni. Finché non lo fai, le email si perdono.
+Le due impostazioni lato account, entrambe confermate funzionanti con un invio reale dal sito live:
+
+1. **Dashboard** → sul form, **hCaptcha** come metodo di blocco spam. Se non fosse attivo, il widget viene mostrato ma non viene verificato.
+2. **Destinazione**: le email arrivano da `noreply@web3forms.com`, con il forwarder regolare verso `antonioverde.dev@gmail.com`.
 
 Dettagli implementativi (scelte già prese, non riverificarle):
 
@@ -121,7 +123,7 @@ L'autenticazione la fa Git Credential Manager (`credential.helper=manager` è gi
 
 ## Verifica fatta
 
-**02/10/2026** — Il live risponde 200 su `index.html`, `sitemap.xml`, `robots.txt`, `.nojekyll`, `assets/css/style.css`, `assets/js/main.js`. Contenuto del live identico al locale (diff riga per riga vuoto). Rimosso il CSS morto `.link-ghost`.
+**02/10/2026** — Il live risponde 200 su `index.html`, `sitemap.xml`, `robots.txt`, `.nojekyll`, `assets/css/style.css`, `assets/js/main.js`. Contenuto del live identico al locale (diff riga per riga vuoto). Rimosso il CSS morto `.link-ghost`. **Form contatti testato con un invio reale dal sito live: hCaptcha verificato e email ricevuta**, quindi le impostazioni Web3Forms (metodo anti-spam e destinazione/forwarder) sono da considerare chiuse.
 
 **01/10/2026** — Tutti i file rispondono HTTP 200 via `php -S` su `127.0.0.1:8123`, `.nojekyll` incluso. Sintassi JS validata con `node --check`. Tag bilanciati, nessun `id` duplicato, nessun `id` mancante dei 16 attesi. `index.html` è UTF-8 senza BOM. hCaptcha verificato contro la doc ufficiale e contro il sorgente di `web3forms.com/client/script.js` scaricato in locale.
 
