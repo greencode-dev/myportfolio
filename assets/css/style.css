@@ -545,7 +545,7 @@ img { max-width: 100%; display: block; }
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
   gap: 44px;
-  align-items: stretch;
+  align-items: start;
 }
 .contact__info {
   background: var(--bg-elev);
